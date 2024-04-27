@@ -1,5 +1,6 @@
 import './App.css';
 import Graph from "react-graph-vis";
+import 'vis-network/styles/vis-network.css';
 
 function App() {
   const graph = {
