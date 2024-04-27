@@ -6,6 +6,7 @@
     "cra-template": "1.2.0",
     "react": "^16.8.3",
     "react-dom": "^16.3.1",
+    "react-graph-vis": "^1.0.7",
     "react-scripts": "5.0.1"
   },
   "scripts": {
@@ -31,8 +32,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "react-vis": "^1.12.1"
   }
 }
