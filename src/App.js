@@ -1,6 +1,7 @@
 import './App.css';
 import Graph from "react-graph-vis";
 import 'vis-network/styles/vis-network.css';
+import {useEffect} from "react";
 
 function generateColoredGraph(graph) {
   const coloredNodes = {};
@@ -47,6 +48,9 @@ function generateColoredGraph(graph) {
 
 
 function App() {
+  useEffect(() => {
+    document.title = "Rishabh Bhatnagar's Family Tree";
+  }, []);
   let graph = {
     nodes: [
       {id: 1, label: "Sushil Kumar \nBhatnagar"},
