@@ -18,6 +18,24 @@ function l(n) {
   return colors[n % colors.length];
 }
 
+function generateTitleFromObject(data) {
+  const element = document.createElement("div");
+
+  // Iterate over the key-value pairs and create HTML elements
+  for (const key in data) {
+    if (data.hasOwnProperty(key)) {
+      const pairElement = document.createElement("div");
+      const strongElement = document.createElement("strong");
+      strongElement.textContent = `${key}:`;
+      const valueElement = document.createElement("span");
+      valueElement.textContent = ` ${data[key]}`;
+      pairElement.appendChild(strongElement);
+      pairElement.appendChild(valueElement);
+      element.appendChild(pairElement);
+    }
+  }
+  return element;
+}
 
 function App() {
   useEffect(() => {
@@ -32,25 +50,65 @@ function App() {
   // };
   let graph = {
     nodes: [
-      {id: 16, label: "Kharaksingh \nBhatnagar", color: l(0)},
+      {id: 16, label: "Kharaksingh \nBhatnagar", color: l(0), title: generateTitleFromObject()},
       {id: 17, label: "Shantidevi \nBhatnagar", color: l(0)},
 
-      {id: 1, label: "Sushil Kumar \nBhatnagar", color: l(1)},
-      {id: 2, label: "Ritu \nBhatnagar", color: l(1)},
-      {id: 7, label: "Anil Kumar \nBhatnagar", color: l(1)},
-      {id: 18, label: "Abha \nBhatnagar", color: l(1)},
-      {id: 8, label: "Somprakash \nBhatnagar", color: l(1)},
+      {
+        id: 1,
+        label: "Sushil Kumar \nBhatnagar",
+        color: l(1),
+        title: generateTitleFromObject({"Date Of Birth": "9th October 1965"}),
+      },
+      {
+        id: 2,
+        label: "Ritu \nBhatnagar",
+        color: l(1),
+        title: generateTitleFromObject({"Date Of Birth": "23rd June 1973"})
+      },
+      {
+        id: 7, label: "Anil Kumar \nBhatnagar", color: l(1),
+        title: generateTitleFromObject({"Date Of Birth": "02th February"})
+      },
+      {
+        id: 18, label: "Abha \nBhatnagar", color: l(1),
+        title: generateTitleFromObject({"Date Of Birth": "27th September"})
+      },
+      {
+        id: 8, label: "Somprakash \nBhatnagar", color: l(1),
+        title: generateTitleFromObject({"Date Of Birth": "18th June"})
+      },
       {id: 19, label: "Neelam \nBhatnagar", color: l(1)},
-      {id: 9, label: "Vipin \nBhatnagar", color: l(1)},
+      {
+        id: 9, label: "Vipin \nBhatnagar", color: l(1),
+        title: generateTitleFromObject({"Date Of Birth": "25th August"})
+      },
       {id: 20, label: "Shobha \nBhatnagar", color: l(1)},
-
-      {id: 3, label: "Ankita \nBhatnagar", color: l(2)},
-      {id: 4, label: "Rishabh \nBhatnagar", color: l(2)},
-      {id: 5, label: "Aditya \nBhatnagar", color: l(2)},
+      {
+        id: 3,
+        label: "Ankita \nBhatnagar",
+        color: l(2),
+        title: generateTitleFromObject({"Date Of Birth": "15th October 1996"})
+      },
+      {
+        id: 4,
+        label: "Rishabh \nBhatnagar",
+        color: l(2),
+        title: generateTitleFromObject({"Date Of Birth": "11th January 1999"})
+      },
+      {
+        id: 5, label: "Aditya \nBhatnagar", color: l(2),
+        title: generateTitleFromObject({"Date Of Birth": "19th January 2004"})
+      },
       {id: 6, label: "Utkarsh \nPandharkar", color: l(2)},
-      {id: 10, label: "Ansh \nBhatnagar", color: l(2)},
+      {
+        id: 10, label: "Ansh \nBhatnagar", color: l(2),
+        title: generateTitleFromObject({"Date Of Birth": "11th January"})
+      },
       {id: 11, label: "Daksh \nBhatnagar", color: l(2)},
-      {id: 12, label: "Neha \nBhatnagar", color: l(2)},
+      {
+        id: 12, label: "Neha \nBhatnagar", color: l(2),
+        title: generateTitleFromObject({"Date Of Birth": "14th October"})
+      },
       {id: 13, label: "Surbhi \nBhatnagar", color: l(2)},
       {id: 14, label: "Anurag \nBhatnagar", color: l(2)},
       {id: 15, label: "Anshika \nBhatnagar", color: l(2)},
@@ -67,10 +125,22 @@ function App() {
       {id: 30, label: "Divyansh \nBhatnagar", color: l(2)},
 
       {id: 31, label: "Rekha \nBhatnagar", color: l(1)},
-      {id: 32, label: "Arun Kumar \nBhatnagar", color: l(1)},
-      {id: 33, label: "Shubham \nBhatnagar", color: l(2)},
-      {id: 34, label: "Himanshu \nBhatnagar", color: l(2)},
-      {id: 35, label: "Divya \nBhatnagar", color: l(2)},
+      {
+        id: 32, label: "Arun Kumar \nBhatnagar", color: l(1),
+        title: generateTitleFromObject({"Date Of Birth": "30th June"})
+      },
+      {
+        id: 33, label: "Shubham \nBhatnagar", color: l(2),
+        title: generateTitleFromObject({"Date Of Birth": "4th December"})
+      },
+      {
+        id: 34, label: "Himanshu \nBhatnagar", color: l(2),
+        title: generateTitleFromObject({"Date Of Birth": "6th December"})
+      },
+      {
+        id: 35, label: "Divya \nBhatnagar", color: l(2),
+        title: generateTitleFromObject({"Date Of Birth": "23rd December"})
+      },
     ],
     edges: [
       {from: 1, to: 2, label: 'Married'},
@@ -186,7 +256,7 @@ function App() {
         damping: 0.09,
         avoidOverlap: 0
       },
-    }
+    },
   };
 
   const events = {
