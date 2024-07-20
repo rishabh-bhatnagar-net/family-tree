@@ -91,6 +91,6 @@ export function getMembersGraph() {
   tree.marry(chachaji, chachiji)
   tree.marry(fufaji, buaji)
   if (lineageOf)
-    tree = tree.filter(lineageOf);
+    tree = tree.filter(lineageOf, (p) => p.name !== "Kharaksingh Bhatnagar")
   return tree.toGraph();
 }

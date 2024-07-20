@@ -86,7 +86,7 @@ export class FamilyTree {
         }
     }
 
-    filter(personName: string): FamilyTree {
+    filter(personName: string, filterFunc: (Person) => boolean = () => true): FamilyTree {
         console.log("Filtering for a person named:", personName)
 
         // Get person's record with the given name
@@ -103,7 +103,7 @@ export class FamilyTree {
         }
 
         // Filtering out the nodes and edges related to this person
-        return new FamilyTreeDFS(this).traverse(person);
+        return new FamilyTreeDFS(this).traverse(person, filterFunc);
     }
 
     toGraph() {
@@ -145,26 +145,26 @@ class FamilyTreeDFS {
         }(familyTree.people)
     }
 
-    _traverse(person: Person, visited = {}, path = [], edges = []) {
-        if (!person)
-            return;
-        if (visited[person.getID()])
+    _traverse(person: Person, visited = {}, path = [], edges = [], filterFunc: (Person) => boolean) {
+        if (!person || visited[person.getID()])
             return;
         visited[person.getID()] = true;
+        if (!filterFunc(person))
+            return;
         path.push(person);
         for (let neighbourEdge of this.adjList[person.getID()]) {
             edges.push(neighbourEdge);
             let neighbour = this.nodeMap[neighbourEdge.to];
             edges.push(neighbourEdge);
-            this._traverse(neighbour, visited, path, edges);
+            this._traverse(neighbour, visited, path, edges, filterFunc);
         }
     }
 
-    traverse(person: Person): FamilyTree {
+    traverse(person: Person, filterFunc: (Person) => boolean): FamilyTree {
         let visited = {};
         let path = [];
         let edges = [];
-        this._traverse(person, visited, path, edges);
+        this._traverse(person, visited, path, edges, filterFunc);
         // keep only unique edges
         edges = function (edges) {
             let uniqueEdges = [];
