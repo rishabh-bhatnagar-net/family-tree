@@ -1,7 +1,6 @@
 import {FamilyTree, Gender, Person} from "./model.ts";
 
 export function getMembersGraph() {
-  const lineageOf = new URLSearchParams(window.location.search).get('lineageOf');
   let tree = new FamilyTree();
   let dadaji = new Person("Kharaksingh Bhatnagar", Gender.MALE, "", 0);
   let dadiji = new Person("Shantidevi Bhatnagar", Gender.FEMALE, "", 0);
@@ -90,7 +89,20 @@ export function getMembersGraph() {
   tree.marry(badeTauji, badiTaiji)
   tree.marry(chachaji, chachiji)
   tree.marry(fufaji, buaji)
-  if (lineageOf)
-    tree = tree.filter(lineageOf, (p) => p.name !== "Kharaksingh Bhatnagar")
-  return tree.toGraph();
+
+  const lineageOf = new URLSearchParams(window.location.search).get('lineageOf');
+  const surname = new URLSearchParams(window.location.search).get('surname');
+  console.log(`Filtering by lineageOf: ${lineageOf}, surname: ${surname}`)
+  tree = tree.filter(lineageOf, surnameFilter(surname))
+  let graph = tree.toGraph();
+  console.log("graph", graph)
+  return graph
+}
+
+function surnameFilter(surname: string): (p: Person) => boolean {
+  return function (p: Person): boolean {
+    if (!surname)
+      return true;
+    return p.getSurname() === surname;
+  }
 }

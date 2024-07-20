@@ -40,6 +40,12 @@ export class Person {
         this.gender = gender
     }
 
+    getSurname() {
+        // name could be split by spaces or newlines
+        let names = this.name.split(/[\s\n]+/);
+        return names[names.length - 1];
+    }
+
     getID() {
         return this.id;
     }
@@ -89,6 +95,8 @@ export class FamilyTree {
     filter(personName: string, filterFunc: (Person) => boolean = () => true): FamilyTree {
         console.log("Filtering for a person named:", personName)
 
+        let familyTree = filterNodesAndEdges(this, filterFunc);
+
         // Get person's record with the given name
         let person = (function (nodes: Person[], memberName: string): Person {
             for (let person of nodes) {
@@ -99,11 +107,11 @@ export class FamilyTree {
         })(this.people, personName)
         if (!person) {
             console.warn("Person not found, can't filter for lineage.");
-            return this;
+            return familyTree;
         }
 
         // Filtering out the nodes and edges related to this person
-        return new FamilyTreeDFS(this).traverse(person, filterFunc);
+        return new FamilyTreeDFS(familyTree).traverse(person);
     }
 
     toGraph() {
@@ -145,26 +153,24 @@ class FamilyTreeDFS {
         }(familyTree.people)
     }
 
-    _traverse(person: Person, visited = {}, path = [], edges = [], filterFunc: (Person) => boolean) {
+    _traverse(person: Person, visited = {}, path = [], edges = []) {
         if (!person || visited[person.getID()])
             return;
         visited[person.getID()] = true;
-        if (!filterFunc(person))
-            return;
         path.push(person);
         for (let neighbourEdge of this.adjList[person.getID()]) {
             edges.push(neighbourEdge);
             let neighbour = this.nodeMap[neighbourEdge.to];
             edges.push(neighbourEdge);
-            this._traverse(neighbour, visited, path, edges, filterFunc);
+            this._traverse(neighbour, visited, path, edges);
         }
     }
 
-    traverse(person: Person, filterFunc: (Person) => boolean): FamilyTree {
+    traverse(person: Person): FamilyTree {
         let visited = {};
         let path = [];
         let edges = [];
-        this._traverse(person, visited, path, edges, filterFunc);
+        this._traverse(person, visited, path, edges);
         // keep only unique edges
         edges = function (edges) {
             let uniqueEdges = [];
@@ -180,4 +186,23 @@ class FamilyTreeDFS {
         }(edges)
         return new FamilyTree(path, edges);
     }
+}
+
+function filterNodesAndEdges(familyTree: FamilyTree, filterFunc: (Person) => boolean) {
+    let filteredNodes = [];
+    let filteredEdges = [];
+    for (let node of familyTree.people) {
+        if (filterFunc(node)) {
+            filteredNodes.push(node);
+        }
+    }
+
+    // remove edges which are not connected to the filtered nodes
+    let filteredNodeIDs = filteredNodes.map(node => node.id);
+    for (let edge of familyTree.edges) {
+        if (filteredNodeIDs.includes(edge.from) && filteredNodeIDs.includes(edge.to)) {
+            filteredEdges.push(edge);
+        }
+    }
+    return new FamilyTree(filteredNodes, filteredEdges);
 }
