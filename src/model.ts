@@ -178,8 +178,6 @@ class FamilyTreeDFS {
             }
             return uniqueEdges;
         }(edges)
-        console.log(edges)
-        console.log(path)
         return new FamilyTree(path, edges);
     }
 }
