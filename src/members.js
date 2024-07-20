@@ -1,6 +1,7 @@
 import {FamilyTree, Gender, Person} from "./model.ts";
 
 export function getMembersGraph() {
+  const lineageOf = new URLSearchParams(window.location.search).get('lineageOf');
   let tree = new FamilyTree();
   let dadaji = new Person("Kharaksingh Bhatnagar", Gender.MALE, "", 0);
   let dadiji = new Person("Shantidevi Bhatnagar", Gender.FEMALE, "", 0);
@@ -89,5 +90,7 @@ export function getMembersGraph() {
   tree.marry(badeTauji, badiTaiji)
   tree.marry(chachaji, chachiji)
   tree.marry(fufaji, buaji)
+  if (lineageOf)
+    tree = tree.filter(lineageOf);
   return tree.toGraph();
 }
