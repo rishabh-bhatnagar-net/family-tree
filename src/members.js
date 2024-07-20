@@ -11,6 +11,7 @@ export function getMembersGraph() {
   let naniji = new Person("Kanti Bhatnagar", Gender.MALE, "", 0);
   let nanaji = new Person("Vijay Pal Bhatnagar", Gender.MALE, "", 0);
   tree.addPeople([naniji, nanaji])
+  tree.marry(nanaji, naniji)
 
   let papa = new Person("Sushil Kumar Bhatnagar", Gender.MALE, "9th October 1965", 1);
   let mummy = new Person("Ritu Bhatnagar", Gender.FEMALE, "23rd June 1973", 1);
